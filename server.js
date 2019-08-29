@@ -13,7 +13,7 @@ var requestHandler = function(request, response) {
 
     case '/':   //Reserved case for root directory, respond 404 as it is empty for now.
         response.statusCode = 404;
-        response.end("404 - Unknown or unspecified directory.");
+        response.end("Bad gateway error");
       break;
 
     case '/listings':   //Respond with JSON data for listings directory.
@@ -23,7 +23,7 @@ var requestHandler = function(request, response) {
 
     default:  //Default response 404.
         response.statusCode = 404;
-        response.end("404 - Unknown or unspecified directory.");
+        response.end("Bad gateway error");
 
   }
 
@@ -32,7 +32,7 @@ var requestHandler = function(request, response) {
 fs.readFile('listings.json', 'utf8', function(err, data) {
 
   //Parse data from disk into JSON, check for error from JSON.parse() function.
-  function readFileToJSON() {
+  function readFileToJSON(data) {
     try {
       
       listingData = JSON.parse(data);
@@ -47,7 +47,7 @@ fs.readFile('listings.json', 'utf8', function(err, data) {
   }
 
   //Only create & start server if parsing JSON was successful.
-  if(readFileToJSON){
+  if(readFileToJSON(data)){
     
     // Create Server
     server = http.createServer(requestHandler);
