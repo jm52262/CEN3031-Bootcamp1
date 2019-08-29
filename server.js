@@ -11,14 +11,24 @@ var requestHandler = function(request, response) {
 
   //console.log(parsedUrl);
 
-  if (parsedUrl.pathname == '/listings'){
-    response.write(JSON.stringify(listingData));
+  switch(parsedUrl.pathname) {
+
+    case '/':
+        response.statusCode = 404;
+        response.end("Bad gateway error");
+      break;
+
+    case '/listings':
+        response.writeHead(200, {"Content-Type": "application/json"});
+        response.end(JSON.stringify(listingData, null, 3));
+      break;
+
+    default:
+        response.statusCode = 404;
+        response.end("Bad gateway error");
+
   }
-  else {
-    response.write("Unknown or unspecified directory.");
-  }
-  
-  response.end();
+
   /*
     Your request handler should send listingData in the JSON format as a response if a GET request 
     is sent to the '/listings' path. Otherwise, it should send a 404 error. 
